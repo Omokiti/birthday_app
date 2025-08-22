@@ -1,5 +1,5 @@
 const cron = require('node-cron')
-const nodemailer = require('node-mailer')
+const nodemailer = require('nodemailer')
 
 require('dotenv').config()
 
