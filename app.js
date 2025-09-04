@@ -35,7 +35,7 @@ app.post('/add',async (req,res)=>{
 })
 
 
-app.listen(Port,(req,res)=>{
+app.listen(Port,()=>{
     console.log(`Server is listening on port ${Port}`)
     require("./cron");
 })
