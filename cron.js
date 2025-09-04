@@ -9,7 +9,6 @@ const User = require('./models/users')
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
-   
     auth: {
       user: process.env.GMAIL_USER,
       pass: process.env.GMAIL_PASSWORD
@@ -37,26 +36,28 @@ async function sendBirthdayEmail(user){
 }
 
 
-//check for borthdays at 7am daily
+//check for birthdays
 
-cron.schedule("0 7 * * *", async()=>{
+async function birthdayCheck(){
   console.log('checking for birthdays')
-
   const today = new Date();
   const month = today.getMonth();
   const day = today.getDate();
 
   try {
-    const users = await User.find()
-    users.forEach(user => {
-        const dob = new Date(user.dob)
-        if(dob.getMonth() === month && dob.getDate() === day){
-            sendBirthdayEmail(user)
-
-        }
-    })
+    const users = await User.find();
+    for (const user of users) {
+      const dob = new Date(user.dob);
+      if (dob.getMonth() === month && dob.getDate() === day) {
+        await sendBirthdayEmail(user);
+      }
+    }
+    console.log("Birthday check complete.");
+    process.exit(0); // ✅ Ensure script ends
   } catch (error) {
     console.log('Error checking birthday')
   }
 
-})
+}
+
+birthdayCheck();
