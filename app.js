@@ -7,7 +7,7 @@ const bodyParser = require('body-parser')
 const Port = process.env.PORT
 const User = require('./models/users')
 const path = require('path')
-require("./cron");
+
 //connect to Mongodb
 const db = require('./db')
 db.connectToMongoDB()
@@ -37,4 +37,5 @@ app.post('/add',async (req,res)=>{
 
 app.listen(Port,(req,res)=>{
     console.log(`Server is listening on port ${Port}`)
+    require("./cron");
 })
