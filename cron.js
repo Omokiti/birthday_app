@@ -38,7 +38,8 @@ async function sendBirthdayEmail(user){
 
 //check for birthdays
 
-cron.schedule("0 7 * * *", async () => {
+// cron.schedule("0 7 * * *", async () => {
+  async function birthdayCheck(){
   console.log('checking for birthdays')
   const today = new Date();
   const month = today.getMonth();
@@ -57,6 +58,7 @@ cron.schedule("0 7 * * *", async () => {
     console.log('Error checking birthday')
   }
 
-})
+}
 console.log("✅ Cron job scheduled and running in background...");
 
+birthdayCheck();
