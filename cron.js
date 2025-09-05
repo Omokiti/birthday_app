@@ -59,6 +59,11 @@ async function sendBirthdayEmail(user){
   }
 
 }
+
+cron.schedule("0 7 * * *", birthdayCheck, {
+  scheduled: true,
+  timezone: "UTC",
+});
+
 console.log("✅ Cron job scheduled and running in background...");
 
-birthdayCheck();
