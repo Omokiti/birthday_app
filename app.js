@@ -9,8 +9,10 @@ const User = require('./models/users')
 const path = require('path')
 
 //connect to Mongodb
-const db = require('./db')
-db.connectToMongoDB()
+const { connectToMongoDB } = require("./db");
+
+connectToMongoDB();
+
 
 //middleware
 app.use(bodyParser.urlencoded({ extended: true}))
@@ -37,5 +39,5 @@ app.post('/add',async (req,res)=>{
 
 app.listen(Port,()=>{
     console.log(`Server is listening on port ${Port}`)
-    require("./cron");
+    // require("./cron");
 })

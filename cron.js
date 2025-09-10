@@ -1,6 +1,6 @@
-const cron = require('node-cron')
-const nodemailer = require('nodemailer')
 
+const nodemailer = require('nodemailer')
+const { connectToMongoDB, disconnectFromMongoDB } = require("./db");
 require('dotenv').config()
 
 const User = require('./models/users')
@@ -35,10 +35,9 @@ async function sendBirthdayEmail(user){
     }
 }
 
-
 //check for birthdays
 
-// cron.schedule("0 7 * * *", async () => {
+
   async function birthdayCheck(){
   console.log('checking for birthdays')
   const today = new Date();
@@ -60,10 +59,21 @@ async function sendBirthdayEmail(user){
 
 }
 
-cron.schedule("0 7 * * *", birthdayCheck, {
-  scheduled: true,
-  timezone: "UTC",
-});
+async function main() {
+  try {
+    await connectToMongoDB();
+    console.log("Connected to MongoDB");
+    await birthdayCheck();
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  } finally {
+    await disconnectFromMongoDB();
+    console.log("Disconnected from MongoDB");
+    process.exit(0);
+  }
+}
 
-console.log("✅ Cron job scheduled and running in background...");
 
+
+main();
