@@ -1,5 +1,5 @@
 
-const nodemailer = require('nodemailer')
+const nodemailer = require('nodemailer');
 const { connectToMongoDB, disconnectFromMongoDB } = require("./db");
 require('dotenv').config()
 

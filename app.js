@@ -1,12 +1,12 @@
-require('dotenv').config()
+require('dotenv').config();
 
-const express = require('express')
+const express = require('express');
 
 const app = express ()
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 const Port = process.env.PORT
-const User = require('./models/users')
-const path = require('path')
+const User = require('./models/users');
+const path = require('path');
 
 //connect to Mongodb
 const { connectToMongoDB } = require("./db");
@@ -16,6 +16,8 @@ connectToMongoDB();
 
 //middleware
 app.use(bodyParser.urlencoded({ extended: true}))
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 //render the form that takes user input
 app.get('/',(req,res)=>{
@@ -30,14 +32,17 @@ app.post('/add',async (req,res)=>{
 
     try {
         await User.create({username,email,dob})
-       return res.status(201).json({message:`Birthday succesfully added for ${username}`})
+        res.sendFile(path.join(__dirname, "views/success.html"));
+     
     } catch (error) {
-        res.status(500).json({error:error.message})
+        console.error('Error saving birthday',error)
+        res.sendFile(path.join(__dirname, "views", "error.html"));
+       
     }
 })
 
 
 app.listen(Port,()=>{
     console.log(`Server is listening on port ${Port}`)
-    // require("./cron");
+   
 })
